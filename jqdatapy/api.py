@@ -8,7 +8,10 @@ import requests
 
 from jqdatapy import jqdata_env, save_env
 
+from tenacity import retry, wait_random_exponential, wait_random
+
 url = "https://dataapi.joinquant.com/apis"
+
 
 
 class HttpAccessError(Exception):
@@ -189,6 +192,7 @@ def _get_token(mob=None, pwd=None):
     return response.text
 
 
+@retry(wait=wait_random(min=1, max=2))
 def _request_jqdata(method: string, token: string = jqdata_env["token"], **kwargs):
     body = {
         "method": method,
