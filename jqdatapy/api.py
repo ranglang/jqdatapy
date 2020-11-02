@@ -159,7 +159,7 @@ def get_token(mob=None, pwd=None, force=False):
     if jqdata_env["token"]:
         return jqdata_env["token"]
 
-
+@retry(wait=wait_random(min=1, max=2))
 def request_jqdata(method: string, token: string = None, return_type='df', dtype={'code': str}, parse_dates=['day'],
                    header='infer', **kwargs):
     if not token:
